@@ -20,9 +20,8 @@ public class VersionInfo extends CoreEntityInfo {
     private boolean isEnabled;
     // 版本下载量
     private Long downloadCount;
-
     // 对应的应用文件
-    private Long fileId;
+    private String fileKey;
 
     public Long getAppId() {
         return appId;
@@ -64,11 +63,11 @@ public class VersionInfo extends CoreEntityInfo {
         this.downloadCount = downloadCount;
     }
 
-    public Long getFileId() {
-        return fileId;
+    public String getFileKey() {
+        return fileKey;
     }
 
-    public void setFileId(Long fileId) {
-        this.fileId = fileId;
+    public void setFileKey(String fileKey) {
+        this.fileKey = fileKey;
     }
 }

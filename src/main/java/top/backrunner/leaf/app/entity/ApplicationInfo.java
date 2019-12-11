@@ -24,7 +24,7 @@ public class ApplicationInfo extends CoreEntityInfo {
     // 描述
     private String description;
     // 图标
-    private String iconId;
+    private String iconKey;
     // 当前版本
     @ElementCollection
     private Map<String, String> currentVersion = new HashMap<>();
@@ -32,7 +32,7 @@ public class ApplicationInfo extends CoreEntityInfo {
     public boolean isEnabled;
 
     // 下载量
-    public boolean downloadCount;
+    public long downloadCount;
 
     public long getUid() {
         return uid;
@@ -66,12 +66,12 @@ public class ApplicationInfo extends CoreEntityInfo {
         this.description = description;
     }
 
-    public String getIconId() {
-        return iconId;
+    public String getIconKey() {
+        return iconKey;
     }
 
-    public void setIconId(String iconId) {
-        this.iconId = iconId;
+    public void setIconKey(String iconKey) {
+        this.iconKey = iconKey;
     }
 
     public Map<String, String> getCurrentVersion() {
@@ -90,11 +90,11 @@ public class ApplicationInfo extends CoreEntityInfo {
         isEnabled = enabled;
     }
 
-    public boolean isDownloadCount() {
+    public long isDownloadCount() {
         return downloadCount;
     }
 
-    public void setDownloadCount(boolean downloadCount) {
+    public void setDownloadCount(long downloadCount) {
         this.downloadCount = downloadCount;
     }
 }

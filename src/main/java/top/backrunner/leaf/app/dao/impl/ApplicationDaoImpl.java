@@ -7,8 +7,15 @@ import top.backrunner.leaf.app.dao.ApplicationDao;
 import top.backrunner.leaf.app.entity.ApplicationInfo;
 import top.backrunner.leaf.core.dao.impl.BaseDaoImpl;
 
+import java.util.List;
+
 @Repository
 public class ApplicationDaoImpl extends BaseDaoImpl<ApplicationInfo> implements ApplicationDao {
+    @Override
+    public List<ApplicationInfo> getList(Long userId) {
+        return this.findByHql("FROM ApplicationInfo WHERE uid = " + userId);
+    }
+
     @Override
     public boolean bundleIdExists(String bundleId) {
         Session session = this.getHibernateSession();
