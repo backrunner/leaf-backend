@@ -16,7 +16,6 @@ import top.backrunner.leaf.utils.misc.QiniuUtils;
 import top.backrunner.leaf.utils.security.AuthUtils;
 
 import javax.annotation.Resource;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -50,6 +49,48 @@ public class ApplicationController {
         } else {
             return R.error("添加失败");
         }
+    }
+
+    @RequestMapping(value = "/editApp")
+    @ResponseBody
+    public R editApp(Long appId, String name, String desc, String iconKey){
+        if (!ObjectUtils.allNotNull(appId, name, desc)){
+            return R.badRequest("提交的参数不完整");
+        }
+        ApplicationInfo applicationInfo = applicationService.fetchApplication(appId);
+        if (applicationInfo == null){
+            return R.error("找不到该应用");
+        }
+        if (applicationInfo.getUid() != AuthUtils.getUserId()) {
+            return R.unauth("无权访问");
+        }
+        applicationInfo.setDisplayName(name);
+        applicationInfo.setDescription(desc);
+        applicationInfo.setIconKey(iconKey);
+        if (applicationService.updateApplication(applicationInfo)){
+            return R.ok("编辑成功");
+        } else {
+            return R.error("编辑失败");
+        }
+    }
+
+    @RequestMapping(value = "/getInfo")
+    @ResponseBody
+    public R getInfo(Long appId){
+        if (!ObjectUtils.allNotNull(appId)){
+            return R.badRequest("提交的参数不完整");
+        }
+        ApplicationInfo applicationInfo = applicationService.fetchApplication(appId);
+        if (applicationInfo == null){
+            return R.error("找不到该应用");
+        }
+        if (applicationInfo.getUid() != AuthUtils.getUserId()) {
+            return R.unauth("无权访问");
+        }
+        // 获取该应用的版本数量
+        JSONObject appJO = JSON.parseObject(JSON.toJSONString(applicationInfo));
+        appJO.put("versionCount", applicationService.getVersionCount(appId));
+        return R.ok(appJO);
     }
 
     @RequestMapping(value = "/getAppList")
