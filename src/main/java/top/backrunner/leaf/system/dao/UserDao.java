@@ -3,6 +3,8 @@ package top.backrunner.leaf.system.dao;
 import top.backrunner.leaf.core.dao.BaseDao;
 import top.backrunner.leaf.system.entity.UserInfo;
 
+import java.util.List;
+
 public interface UserDao extends BaseDao<UserInfo> {
     // 根据用户名找用户信息
     public UserInfo findByUserName(String username);

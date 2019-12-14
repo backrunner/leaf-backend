@@ -8,7 +8,7 @@ import top.backrunner.leaf.system.dao.InviteCodeDao;
 import top.backrunner.leaf.system.entity.InviteCodeInfo;
 
 @Repository
-public class InviteCodeImpl extends BaseDaoImpl<InviteCodeInfo> implements InviteCodeDao {
+public class InviteCodeDaoImpl extends BaseDaoImpl<InviteCodeInfo> implements InviteCodeDao {
     @Override
     public boolean checkExists(String code) {
         Session session = this.getHibernateSession();

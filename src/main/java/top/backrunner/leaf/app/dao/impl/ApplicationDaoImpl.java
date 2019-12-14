@@ -29,4 +29,14 @@ public class ApplicationDaoImpl extends BaseDaoImpl<ApplicationInfo> implements 
     public long getCountByUser(Long userId) {
         return this.countByHql("select count(*) from ApplicationInfo WHERE uid = "+userId);
     }
+
+    @Override
+    public boolean deleteById(Long id) {
+        return this.removeByHql("DELETE FROM ApplicationInfo WHERE id = "+id);
+    }
+
+    @Override
+    public long getCount() {
+        return this.countByHql("select count(*) from ApplicationInfo");
+    }
 }

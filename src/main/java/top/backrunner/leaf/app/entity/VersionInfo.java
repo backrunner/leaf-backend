@@ -19,7 +19,7 @@ public class VersionInfo extends CoreEntityInfo {
     // 是否可用
     private boolean isEnabled;
     // 版本下载量
-    private Long downloadCount;
+    private long downloadCount;
     // 对应的应用文件
     private String fileKey;
 
@@ -55,11 +55,11 @@ public class VersionInfo extends CoreEntityInfo {
         isEnabled = enabled;
     }
 
-    public Long getDownloadCount() {
+    public long getDownloadCount() {
         return downloadCount;
     }
 
-    public void setDownloadCount(Long downloadCount) {
+    public void setDownloadCount(long downloadCount) {
         this.downloadCount = downloadCount;
     }
 

@@ -90,7 +90,7 @@ public class ApplicationInfo extends CoreEntityInfo {
         isEnabled = enabled;
     }
 
-    public long isDownloadCount() {
+    public long getDownloadCount() {
         return downloadCount;
     }
 

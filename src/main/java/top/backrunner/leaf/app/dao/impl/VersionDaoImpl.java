@@ -7,8 +7,33 @@ import top.backrunner.leaf.app.dao.VersionDao;
 import top.backrunner.leaf.app.entity.VersionInfo;
 import top.backrunner.leaf.core.dao.impl.BaseDaoImpl;
 
+import java.util.List;
+
 @Repository
 public class VersionDaoImpl extends BaseDaoImpl<VersionInfo> implements VersionDao {
+
+    @Override
+    public List<VersionInfo> getList(Long appId) {
+        Session session = this.getHibernateSession();
+        Query<VersionInfo> query = session.createQuery("select count(*) from VersionInfo where appId = :appId");
+        query.setParameter("appId", appId);
+        return query.list();
+    }
+
+    @Override
+    public List<VersionInfo> getList(Long appId, String platform) {
+        Session session = this.getHibernateSession();
+        Query<VersionInfo> query = session.createQuery("select count(*) from VersionInfo where appId = :appId and platform = :platform");
+        query.setParameter("appId", appId);
+        query.setParameter("platform", platform);
+        return query.list();
+    }
+
+    @Override
+    public List<VersionInfo> getList(Long appId, int page, int pageSize) {
+        return this.showPage("FROM VersionInfo WHERE appId = "+appId, page, pageSize);
+    }
+
     @Override
     public boolean exists(Long appId, String platform, String version) {
         Session session = this.getHibernateSession();
@@ -44,5 +69,15 @@ public class VersionDaoImpl extends BaseDaoImpl<VersionInfo> implements VersionD
         query.setParameter("uid", userId);
         query.setMaxResults(1);
         return (Long)query.uniqueResult();
+    }
+
+    @Override
+    public boolean deleteById(Long id) {
+        return this.removeByHql("delete from VersionInfo where id = "+id);
+    }
+
+    @Override
+    public boolean deleteByAppId(Long appId) {
+        return this.removeByHql("delete from VersionInfo where appId = "+appId);
     }
 }

@@ -6,6 +6,8 @@ import top.backrunner.leaf.system.dao.UserDao;
 import top.backrunner.leaf.system.entity.UserInfo;
 import top.backrunner.leaf.utils.filter.SQLFilter;
 
+import java.util.List;
+
 @Repository
 public class UserDaoImpl extends BaseDaoImpl<UserInfo> implements UserDao {
 

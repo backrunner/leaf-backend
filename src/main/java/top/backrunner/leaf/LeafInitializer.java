@@ -5,7 +5,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import top.backrunner.leaf.system.service.UserService;
 import top.backrunner.leaf.utils.misc.GeoIPUtils;
-import top.backrunner.leaf.utils.misc.QiniuUtils;
+import top.backrunner.leaf.utils.network.QiniuUtils;
 
 import javax.annotation.Resource;
 

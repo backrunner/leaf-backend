@@ -117,7 +117,10 @@ public class UserController {
             // 注销帐号
             Subject subject = SecurityUtils.getSubject();
             subject.logout();
-            if (applicationService.deleteApplicationByUser(user.getId()) && userService.deleteUser(user.getId())){
+            if (!applicationService.deleteApplicationByUser(user.getId())) {
+                return R.error("删除关联数据失败");
+            }
+            if (userService.deleteUser(user.getId())){
                 return R.ok("注销成功");
             } else {
                 return R.error("注销失败");

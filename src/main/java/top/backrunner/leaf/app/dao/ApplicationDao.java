@@ -9,4 +9,6 @@ public interface ApplicationDao extends BaseDao<ApplicationInfo> {
     public List<ApplicationInfo> getList(Long userId);
     public boolean bundleIdExists(String bundleId);
     public long getCountByUser(Long userId);
+    public boolean deleteById(Long id);
+    public long getCount();
 }
