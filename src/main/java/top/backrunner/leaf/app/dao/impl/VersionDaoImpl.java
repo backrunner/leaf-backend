@@ -31,7 +31,7 @@ public class VersionDaoImpl extends BaseDaoImpl<VersionInfo> implements VersionD
 
     @Override
     public List<VersionInfo> getList(Long appId, int page, int pageSize) {
-        return this.showPage("FROM VersionInfo WHERE appId = "+appId, page, pageSize);
+        return this.showPage("FROM VersionInfo WHERE appId = "+appId + "order by createTime desc", page, pageSize);
     }
 
     @Override

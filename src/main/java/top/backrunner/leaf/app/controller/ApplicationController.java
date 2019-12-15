@@ -287,6 +287,23 @@ public class ApplicationController {
         }
     }
 
+    @RequestMapping(value = "/getReportList")
+    @ResponseBody
+    public R getReportList(int page, int pageSize){
+        if (!ObjectUtils.allNotNull(page, pageSize)){
+            return R.badRequest("提交的参数不完整");
+        }
+        List<Map<String, Object>> res = applicationService.getReport(AuthUtils.getUserId(), page, pageSize);
+        if (res.isEmpty()){
+            return R.error("无查询结果");
+        } else {
+            Map<String, Object> map = new HashMap<>();
+            map.put("total", applicationService.getApplicationCount(AuthUtils.getUserId()));
+            map.put("list", res);
+            return R.ok(map);
+        }
+    }
+
     @RequestMapping(value = "/uploadIcon")
     @ResponseBody
     public R uploadIcon(@RequestParam(value = "file") MultipartFile file){

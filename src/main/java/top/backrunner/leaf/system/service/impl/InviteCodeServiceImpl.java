@@ -2,11 +2,11 @@ package top.backrunner.leaf.system.service.impl;
 
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.Md5Hash;
-import org.apache.shiro.crypto.hash.Sha1Hash;
 import org.springframework.stereotype.Service;
 import top.backrunner.leaf.system.dao.InviteCodeDao;
 import top.backrunner.leaf.system.entity.InviteCodeInfo;
 import top.backrunner.leaf.system.service.InviteCodeService;
+import top.backrunner.leaf.utils.security.AuthUtils;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
@@ -24,6 +24,7 @@ public class InviteCodeServiceImpl implements InviteCodeService {
     public void generate(String prefix, int count) {
         for (int i=0;i<count;i++){
             InviteCodeInfo info = new InviteCodeInfo();
+            info.setCreateUid(AuthUtils.getUserId());
             info.setCreateTime(new Date());
             info.setUsed(false);
             info.setCode(prefix + new Md5Hash(new SecureRandomNumberGenerator().nextBytes().toHex() + System.currentTimeMillis()).toHex());
@@ -34,6 +35,7 @@ public class InviteCodeServiceImpl implements InviteCodeService {
     @Override
     public boolean addNew(String code) {
         InviteCodeInfo info = new InviteCodeInfo();
+        info.setCreateUid(AuthUtils.getUserId());
         info.setCreateTime(new Date());
         info.setUsed(false);
         info.setCode(code);
@@ -52,7 +54,7 @@ public class InviteCodeServiceImpl implements InviteCodeService {
 
     @Override
     public List<InviteCodeInfo> getList(int page, int pageSize) {
-        return inviteCodeDao.showPage("FROM InviteCodeInfo", page, pageSize);
+        return inviteCodeDao.showPage("FROM InviteCodeInfo ORDER BY createTime DESC", page, pageSize);
     }
 
     @Override

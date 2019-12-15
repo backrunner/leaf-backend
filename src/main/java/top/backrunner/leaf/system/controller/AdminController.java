@@ -16,7 +16,7 @@ import top.backrunner.leaf.utils.common.R;
 import top.backrunner.leaf.utils.security.AuthUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +48,53 @@ public class AdminController {
             res.put("total", inviteCodeService.getCount());
             res.put("list", list);
             return R.ok(res);
+        }
+    }
+
+    @RequestMapping("/generateInviteCode")
+    @ResponseBody
+    public R generateInviteCode(int count, HttpServletRequest request){
+        if (!ObjectUtils.allNotNull(count)) {
+            return R.badRequest("提交的参数不完整");
+        }
+        if (count < 1) {
+            return R.badRequest("数量错误");
+        }
+        String prefix = request.getParameter("prefix");
+        if (prefix != null && prefix.trim().length() > 0) {
+            inviteCodeService.generate(prefix, count);
+        } else {
+            inviteCodeService.generate(count);
+        }
+        return R.ok("生成完成");
+    }
+
+    @RequestMapping("/addInviteCode")
+    @ResponseBody
+    public R addInviteCode(String code){
+        if (!ObjectUtils.allNotNull(code)) {
+            return R.badRequest("提交的参数不完整");
+        }
+        if (inviteCodeService.codeExist(code.trim())){
+            return R.error("该邀请码已存在");
+        }
+        if (inviteCodeService.addNew(code)){
+            return R.ok("添加成功");
+        } else {
+            return R.error("添加失败");
+        }
+    }
+
+    @RequestMapping("/deleteInviteCode")
+    @ResponseBody
+    public R deleteInviteCode(long id){
+        if (!ObjectUtils.allNotNull(id)){
+            return R.badRequest("提交的参数不完整");
+        }
+        if (inviteCodeService.delete(id)){
+            return R.ok("删除成功");
+        } else {
+            return R.error("删除失败");
         }
     }
 
@@ -143,7 +190,7 @@ public class AdminController {
         } else {
             Map<String, Object> map = new HashMap<>();
             map.put("total", userService.getUserCount());
-            map.put("list", map);
+            map.put("list", res);
             return R.ok(map);
         }
     }
@@ -222,7 +269,7 @@ public class AdminController {
         return R.error();
     }
 
-    @RequestMapping(value = "deleteUser")
+    @RequestMapping(value = "/deleteUser")
     @ResponseBody
     public R deleteUser(Long uid){
         if (!ObjectUtils.allNotNull(uid)) {

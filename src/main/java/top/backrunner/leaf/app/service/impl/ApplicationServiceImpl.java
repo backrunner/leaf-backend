@@ -11,8 +11,7 @@ import top.backrunner.leaf.utils.network.QiniuUtils;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -37,6 +36,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public long getApplicationCount() {
         return applicationDao.getCount();
+    }
+
+    @Override
+    public long getApplicationCount(long uid) {
+        return applicationDao.countByHql("select count(*) from ApplicationInfo where uid = "+uid);
     }
 
     @Override
@@ -87,6 +91,27 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    public List<Map<String, Object>> getReport(long uid, int page, int pageSize) {
+        List<ApplicationInfo> apps = this.getApplicationList(uid);
+        if (apps.isEmpty()){
+            return null;
+        }
+        List<Map<String, Object>> res = new ArrayList<>();
+        for (ApplicationInfo app : apps){
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", app.getId());
+            map.put("bundleId", app.getBundleId());
+            map.put("name", app.getDisplayName());
+            map.put("createTime", app.getCreateTime());
+            map.put("downloadCount", app.getDownloadCount());
+            map.put("weekDownloadCount", downloadLogDao.getRecentWeekCount(app.getId()));
+            map.put("monthDownloadCount", downloadLogDao.getRecentMonthCount(app.getId()));
+            res.add(map);
+        }
+        return res;
+    }
+
+    @Override
     public VersionInfo fetchVersion(Long id) {
         return versionDao.getById(VersionInfo.class, id);
     }
@@ -122,6 +147,11 @@ public class ApplicationServiceImpl implements ApplicationService {
         v.setEnabled(true);
         v.setDownloadCount(0);
         return versionDao.add(v);
+    }
+
+    @Override
+    public boolean updateVersion(VersionInfo v) {
+        return versionDao.updateEntity(v);
     }
 
     @Override
