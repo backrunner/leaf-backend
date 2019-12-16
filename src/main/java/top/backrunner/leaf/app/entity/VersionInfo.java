@@ -14,6 +14,8 @@ public class VersionInfo extends CoreEntityInfo {
     // 版本号
     @Column(nullable = false)
     private String version;
+    // 描述
+    private String description;
     // 平台
     private String platform;
     // 是否可用
@@ -37,6 +39,14 @@ public class VersionInfo extends CoreEntityInfo {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String desc) {
+        this.description = desc;
     }
 
     public String getPlatform() {

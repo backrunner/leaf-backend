@@ -14,6 +14,8 @@ import top.backrunner.leaf.utils.misc.GeoIPStringUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,6 +40,12 @@ public class DownloadController {
         if (keyInfo == null){
             return R.error("Key 不存在");
         }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(keyInfo.getCreateTime());
+        calendar.add(Calendar.MINUTE, (int) keyInfo.getExpires());
+        if (calendar.getTime().compareTo(new Date()) == -1){
+            return R.create(406,"链接已过期");
+        }
         ApplicationInfo app = applicationService.fetchApplication(keyInfo.getAppId());
         VersionInfo version = applicationService.fetchVersion(keyInfo.getVersionId());
         Map<String, Object> res = new HashMap<>();
@@ -47,6 +55,7 @@ public class DownloadController {
         res.put("createTime", version.getCreateTime());
         res.put("platform", version.getPlatform());
         res.put("version", version.getVersion());
+        res.put("versionDesc", version.getDescription());
         res.put("fileKey", version.getFileKey());
         return R.ok(res);
     }

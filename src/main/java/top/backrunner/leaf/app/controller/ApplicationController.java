@@ -142,7 +142,7 @@ public class ApplicationController {
 
     @RequestMapping(value = "/addVersion")
     @ResponseBody
-    public R addVersion(Long appId, String platform, String version, String fileKey) {
+    public R addVersion(Long appId, String platform, String version, String desc, String fileKey) {
         if (!ObjectUtils.allNotNull(appId, platform, version, fileKey)){
             return R.badRequest("提交的参数不完整");
         }
@@ -169,6 +169,7 @@ public class ApplicationController {
         info.setAppId(appId);
         info.setPlatform(platform);
         info.setVersion(version);
+        info.setDescription(desc);
         info.setFileKey(fileKey);
         // 添加版本到数据库
         boolean res = applicationService.addVersion(info);

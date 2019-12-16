@@ -26,6 +26,12 @@ public class R {
         return JSON.toJSONString(this);
     }
 
+    public static R create(int code, String message) {
+        R r = new R(code, message);
+        return r;
+    }
+
+
     public static R ok() {
         R r = new R(200, "success");
         return r;
