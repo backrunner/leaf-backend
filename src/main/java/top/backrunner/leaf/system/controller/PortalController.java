@@ -10,8 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import top.backrunner.leaf.system.entity.InviteCodeInfo;
 import top.backrunner.leaf.system.entity.RoleInfo;
 import top.backrunner.leaf.system.entity.UserInfo;
+import top.backrunner.leaf.system.service.InviteCodeService;
 import top.backrunner.leaf.system.service.RecaptchaService;
 import top.backrunner.leaf.system.service.UserService;
 import top.backrunner.leaf.utils.common.R;
@@ -27,6 +29,8 @@ public class PortalController {
     private UserService userService;
     @Resource
     private RecaptchaService recaptchaService;
+    @Resource
+    private InviteCodeService inviteCodeService;
 
     // patterns
     private final String usernameRule = "^\\w+$";
@@ -82,8 +86,8 @@ public class PortalController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
-    public R register(String username, String password, String confirmPassword, String recaptchaToken){
-        if (!ObjectUtils.allNotNull(username, password, confirmPassword, recaptchaToken)){
+    public R register(String username, String password, String confirmPassword, String inviteCode, String recaptchaToken){
+        if (!ObjectUtils.allNotNull(username, password, confirmPassword, inviteCode, recaptchaToken)){
             return R.badRequest("提交的参数不完整");
         }
         // 对参数的长度进行校验
@@ -96,6 +100,14 @@ public class PortalController {
         // 两次输入的密码进行核对
         if (!password.equals(confirmPassword)){
             return R.badRequest("两次输入的密码不一致");
+        }
+        // 邀请码校验
+        if (!inviteCodeService.codeExist(inviteCode)){
+            return R.error("该邀请码不存在");
+        }
+        InviteCodeInfo code = inviteCodeService.get(inviteCode);
+        if (code.isUsed()){
+            return R.error("该邀请码已被使用");
         }
         // 用户名校验
         if (!username.matches(usernameRule)){
@@ -120,7 +132,13 @@ public class PortalController {
         user.setRoleId(role.getId());
         // 默认都是启用的
         user.setEnabled(true);
+        // 设置邀请人
+        user.setInviter(code.getCreateUid());
         if (userService.addUser(user)){
+            UserInfo registered = userService.findUserByUsername(username);
+            code.setUsed(true);
+            code.setUsedUid(registered.getId());
+            inviteCodeService.update(code);
             return R.ok("注册成功");
         } else {
             return R.error("注册失败");

@@ -10,6 +10,15 @@ import top.backrunner.leaf.system.entity.InviteCodeInfo;
 @Repository
 public class InviteCodeDaoImpl extends BaseDaoImpl<InviteCodeInfo> implements InviteCodeDao {
     @Override
+    public InviteCodeInfo get(String code) {
+        Session session = this.getHibernateSession();
+        Query<InviteCodeInfo> query = session.createQuery("from InviteCodeInfo where code = :code");
+        query.setParameter("code", code);
+        query.setMaxResults(1);
+        return query.uniqueResult();
+    }
+
+    @Override
     public boolean checkExists(String code) {
         Session session = this.getHibernateSession();
         Query query = session.createQuery("from InviteCodeInfo where code = :code");

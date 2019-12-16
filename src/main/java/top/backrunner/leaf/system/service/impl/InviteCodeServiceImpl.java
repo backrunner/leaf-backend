@@ -43,6 +43,11 @@ public class InviteCodeServiceImpl implements InviteCodeService {
     }
 
     @Override
+    public boolean update(InviteCodeInfo code) {
+        return inviteCodeDao.updateEntity(code);
+    }
+
+    @Override
     public boolean delete(long id) {
         return inviteCodeDao.removeByHql("DELETE FROM InviteCodeInfo WHERE id = "+id);
     }
@@ -50,6 +55,11 @@ public class InviteCodeServiceImpl implements InviteCodeService {
     @Override
     public boolean codeExist(String code) {
         return inviteCodeDao.checkExists(code);
+    }
+
+    @Override
+    public InviteCodeInfo get(String code) {
+        return inviteCodeDao.get(code);
     }
 
     @Override
