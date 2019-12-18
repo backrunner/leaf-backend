@@ -10,7 +10,7 @@
     </parent>
     <groupId>top.backrunner</groupId>
     <artifactId>leaf</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>Leaf</name>
     <description>A platform to distribute apps.</description>
 
@@ -72,6 +72,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.shiro</groupId>

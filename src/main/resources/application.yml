@@ -3,12 +3,12 @@ server:
     uri-encoding: UTF-8
     max-threads: 100
     min-spare-threads: 20
-  port: 8800
+  port: 8001
   servlet:
     context-path: /
-    jsp:
-      init-parameters: false
 spring:
+  jmx:
+    default-domain: leaf
   mvc:
     throw-exception-if-no-handler-found: true
   resources:
@@ -18,8 +18,8 @@ spring:
     time-zone: GMT+8
   servlet:
     multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
+      max-file-size: 1GB
+      max-request-size: 1GB
   jpa:
     database: MYSQL
     generate-ddl: true
@@ -30,7 +30,7 @@ spring:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   profiles:
-    active: dev
+    active: deploy
   http:
     encoding:
       charset: UTF-8
@@ -38,5 +38,4 @@ spring:
       force: true
 logging:
   file:
-    path: ./logs/
-    name: leaf.log
+    path: ./logs/leaf

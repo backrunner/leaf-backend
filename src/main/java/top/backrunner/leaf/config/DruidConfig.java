@@ -1,14 +1,25 @@
 package top.backrunner.leaf.config;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.sql.DataSource;
+
 @Configuration
 public class DruidConfig {
+
+    @ConfigurationProperties(prefix = "spring.datasource")
+    @Bean
+    public DataSource druid(){
+        return new DruidDataSource();
+    }
+
     @Bean
     public ServletRegistrationBean statViewServlet() {
         // 创建servlet注册实体
@@ -16,8 +27,6 @@ public class DruidConfig {
                 "/druid/*");
         // 设置ip白名单
         servletRegistrationBean.addInitParameter("allow", "127.0.0.1");
-        // 设置ip黑名单,如果allow与deny共同存在时,deny优先于allow
-        servletRegistrationBean.addInitParameter("deny", "*");
         // 设置控制台管理用户
         servletRegistrationBean.addInitParameter("loginUsername", "admin");
         servletRegistrationBean.addInitParameter("loginPassword", "admin");

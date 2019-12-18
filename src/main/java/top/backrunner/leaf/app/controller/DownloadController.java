@@ -42,9 +42,11 @@ public class DownloadController {
         }
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(keyInfo.getCreateTime());
-        calendar.add(Calendar.MINUTE, (int) keyInfo.getExpires());
-        if (calendar.getTime().compareTo(new Date()) == -1){
-            return R.create(406,"链接已过期");
+        if (keyInfo.getExpires() != 0) {
+            calendar.add(Calendar.MINUTE, (int) keyInfo.getExpires());
+            if (calendar.getTime().compareTo(new Date()) == -1) {
+                return R.create(406, "链接已过期");
+            }
         }
         ApplicationInfo app = applicationService.fetchApplication(keyInfo.getAppId());
         VersionInfo version = applicationService.fetchVersion(keyInfo.getVersionId());
