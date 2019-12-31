@@ -86,12 +86,9 @@ public class UserController {
             return R.error("两次输入的密码不一致");
         }
         // 校验用户身份和旧密码的正确性
-        UserInfo info = (UserInfo) SecurityUtils.getSubject().getPrincipal();
-        if (!info.getUsername().equals(SecurityUtils.getSubject().getPrincipal())){
-            return R.unauth("身份验证失败");
-        }
+        UserInfo info = AuthUtils.getUser();
         String hashedOldPassword = new SimpleHash("SHA-256", oldPassword, info.getSalt(), 32).toHex();
-        if (!oldPassword.equals(hashedOldPassword)){
+        if (!info.getPassword().equals(hashedOldPassword)){
             return R.error("旧密码不正确");
         }
         String salt = new SecureRandomNumberGenerator().nextBytes().toHex();

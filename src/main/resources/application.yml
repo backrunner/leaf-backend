@@ -29,7 +29,7 @@ spring:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   profiles:
-    active: dev
+    active: deploy
   http:
     encoding:
       charset: UTF-8

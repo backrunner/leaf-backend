@@ -8,7 +8,6 @@ import java.util.Date;
 
 @MappedSuperclass
 public abstract class CoreLogInfo extends CoreInfo implements Serializable {
-    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     public Date getCreateTime() {
