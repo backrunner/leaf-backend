@@ -10,7 +10,7 @@
     </parent>
     <groupId>top.backrunner</groupId>
     <artifactId>leaf</artifactId>
-    <version>1.0.0-RELEASE</version>
+    <version>1.0.1-RELEASE</version>
     <name>Leaf</name>
     <description>A platform to distribute apps.</description>
 
