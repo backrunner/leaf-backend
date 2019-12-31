@@ -3,7 +3,6 @@ server:
     uri-encoding: UTF-8
     max-threads: 100
     min-spare-threads: 20
-  port: 8001
   servlet:
     context-path: /
 spring:
@@ -30,7 +29,7 @@ spring:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   profiles:
-    active: deploy
+    active: dev
   http:
     encoding:
       charset: UTF-8

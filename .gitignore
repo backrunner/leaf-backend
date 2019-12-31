@@ -37,3 +37,4 @@ config.properties
 .mvn
 *.log
 *.gz
+/src/main/resources/application-deploy.yml

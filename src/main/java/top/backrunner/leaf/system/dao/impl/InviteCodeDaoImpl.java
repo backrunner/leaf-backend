@@ -21,7 +21,7 @@ public class InviteCodeDaoImpl extends BaseDaoImpl<InviteCodeInfo> implements In
     @Override
     public boolean checkExists(String code) {
         Session session = this.getHibernateSession();
-        Query query = session.createQuery("from InviteCodeInfo where code = :code");
+        Query query = session.createQuery("select count(*) from InviteCodeInfo where code = :code");
         query.setParameter("code", code);
         query.setMaxResults(1);
         return (Long) query.uniqueResult() > 0;

@@ -15,7 +15,7 @@ public class VersionDaoImpl extends BaseDaoImpl<VersionInfo> implements VersionD
     @Override
     public List<VersionInfo> getList(Long appId) {
         Session session = this.getHibernateSession();
-        Query<VersionInfo> query = session.createQuery("select count(*) from VersionInfo where appId = :appId");
+        Query<VersionInfo> query = session.createQuery("from VersionInfo where appId = :appId");
         query.setParameter("appId", appId);
         return query.list();
     }
@@ -23,7 +23,7 @@ public class VersionDaoImpl extends BaseDaoImpl<VersionInfo> implements VersionD
     @Override
     public List<VersionInfo> getList(Long appId, String platform) {
         Session session = this.getHibernateSession();
-        Query<VersionInfo> query = session.createQuery("select count(*) from VersionInfo where appId = :appId and platform = :platform");
+        Query<VersionInfo> query = session.createQuery("from VersionInfo where appId = :appId and platform = :platform");
         query.setParameter("appId", appId);
         query.setParameter("platform", platform);
         return query.list();
