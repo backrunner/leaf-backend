@@ -149,7 +149,7 @@ public class PortalController {
     @ResponseBody
     public R logout(){
         Subject subject = SecurityUtils.getSubject();
-        if (subject.isAuthenticated()){
+        if (subject.isAuthenticated() || subject.isRemembered()){
             subject.logout();
             return R.ok("登出成功");
         } else {

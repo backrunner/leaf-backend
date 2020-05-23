@@ -1,8 +1,6 @@
 server:
-  tomcat:
-    uri-encoding: UTF-8
-    max-threads: 100
-    min-spare-threads: 20
+  undertow:
+    io-threads: 2
   servlet:
     context-path: /
 spring:
